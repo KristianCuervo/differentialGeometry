@@ -2,10 +2,10 @@ import sympy as sp
 import numpy as np
 
 class Space:
-    def __init__(self, G:sp.Matrix, X:sp.Matrix):
+    def __init__(self, G:sp.Matrix, var:sp.Matrix):
         self.metricG = G
-        self.X = X
-        self.dim = len(X)
+        self.var = var
+        self.dim = len(var)
         self.chris = self.getChristoffelSymbols()
         self.coefficientsR = self.getCoefficientFunctionsR()
     
@@ -25,9 +25,9 @@ class Space:
                     chris_i = 0
                     for l in range(self.dim):
                         chris_i += sp.trigsimp((0.5 * (
-                                (self.metricG[j, l].diff(self.X[i]))
-                                + self.metricG[l, i].diff(self.metricG[j])
-                                + self.metricG[i, j].diff(self.X[l]))))
+                                (self.metricG[j, l].diff(self.var[i]))
+                                + self.metricG[l, i].diff(self.var[j])
+                                + self.metricG[i, j].diff(self.var[l]))))
                     chris[i,j,m] = chris_i * sp.trigsimp(self.metricG.inv())[m,i]
         return chris
     
@@ -50,8 +50,8 @@ class Space:
             for j in range(self.dim):
                 for k in range(self.dim):
                     for m in range(self.dim):
-                        R[i, j, k, m] = (self.chris[j,k,m].diff(self.X[i]) - 
-                                        self.chris[i,k,m].diff(self.X[j])
+                        R[i, j, k, m] = (self.chris[j,k,m].diff(self.var[i]) - 
+                                        self.chris[i,k,m].diff(self.var[j])
                                         )
                         for s in range(self.dim):
                             R[i, j, k, m] += (
