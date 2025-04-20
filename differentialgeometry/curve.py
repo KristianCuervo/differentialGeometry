@@ -1,5 +1,6 @@
 import sympy as sp
 from .manifold import RiemmanianManifold
+
 class Curve:
     def __init__(self, curve_expr: sp.Matrix, parameter: sp.Symbol):
         """
